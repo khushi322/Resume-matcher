@@ -4,3 +4,7 @@ scikit-learn
 spacy
 pydantic
 numpy
+PyPDF2
+requests
+requests-html
+python-multipart

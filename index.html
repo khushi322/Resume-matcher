@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Matcher</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            background: #f8f9fa;
+            border: none;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        .tab.active {
+            background: #007bff;
+            color: white;
+            border-bottom-color: #0056b3;
+        }
+        .tab:hover {
+            background: #0056b3;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+            resize: vertical;
+        }
+        input[type="file"], input[type="url"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 5px;
+            display: none;
+        }
+        .result.success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .result.error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .score {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin: 10px 0;
+        }
+        .status {
+            text-align: center;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .extracted-text {
+            margin-top: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            font-size: 14px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .file-info {
+            margin-top: 10px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📄 Resume Matcher</h1>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('text')">Text Input</button>
+            <button class="tab" onclick="showTab('pdf')">PDF Upload</button>
+            <button class="tab" onclick="showTab('url')">URL Input</button>
+        </div>
+        
+        <!-- Text Input Tab -->
+        <div id="text-tab" class="tab-content active">
+            <form id="textForm">
+                <div class="form-group">
+                    <label for="resumeText">Resume Text:</label>
+                    <textarea id="resumeText" placeholder="Paste your resume text here..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="jobDescription">Job Description:</label>
+                    <textarea id="jobDescription" placeholder="Paste the job description here..." required></textarea>
+                </div>
+                
+                <button type="submit" id="textSubmitBtn">Match Resume</button>
+            </form>
+        </div>
+        
+        <!-- PDF Upload Tab -->
+        <div id="pdf-tab" class="tab-content">
+            <form id="pdfForm">
+                <div class="form-group">
+                    <label for="resumePdf">Upload Resume (PDF):</label>
+                    <input type="file" id="resumePdf" accept=".pdf" required>
+                    <div id="pdfInfo" class="file-info" style="display: none;"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="jobDescriptionPdf">Job Description:</label>
+                    <textarea id="jobDescriptionPdf" placeholder="Paste the job description here..." required></textarea>
+                </div>
+                
+                <button type="submit" id="pdfSubmitBtn">Match Resume</button>
+            </form>
+        </div>
+        
+        <!-- URL Input Tab -->
+        <div id="url-tab" class="tab-content">
+            <form id="urlForm">
+                <div class="form-group">
+                    <label for="resumeTextUrl">Resume Text:</label>
+                    <textarea id="resumeTextUrl" placeholder="Paste your resume text here..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="jobUrl">Job Posting URL:</label>
+                    <input type="url" id="jobUrl" placeholder="https://example.com/job-posting" required>
+                </div>
+                
+                <button type="submit" id="urlSubmitBtn">Match Resume</button>
+            </form>
+        </div>
+        
+        <div id="result" class="result">
+            <div class="score" id="score"></div>
+            <div class="status" id="status"></div>
+            <div id="extractedText" class="extracted-text" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+        
+        // File info display for PDF upload
+        document.getElementById('resumePdf').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const infoDiv = document.getElementById('pdfInfo');
+            
+            if (file) {
+                infoDiv.innerHTML = `Selected file: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+                infoDiv.style.display = 'block';
+            } else {
+                infoDiv.style.display = 'none';
+            }
+        });
+        
+        // Text form submission
+        document.getElementById('textForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('textSubmitBtn');
+            const resultDiv = document.getElementById('result');
+            const scoreDiv = document.getElementById('score');
+            const statusDiv = document.getElementById('status');
+            const extractedTextDiv = document.getElementById('extractedText');
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Matching...';
+            
+            const resumeText = document.getElementById('resumeText').value;
+            const jobDescription = document.getElementById('jobDescription').value;
+            
+            try {
+                const response = await fetch('http://localhost:8000/match/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        resume_text: resumeText,
+                        job_description: jobDescription
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    if (data.error) {
+                        resultDiv.className = 'result error';
+                        scoreDiv.textContent = 'Error';
+                        statusDiv.textContent = data.error;
+                        extractedTextDiv.style.display = 'none';
+                    } else {
+                        resultDiv.className = 'result success';
+                        scoreDiv.textContent = `${data.match_score}%`;
+                        statusDiv.textContent = data.result;
+                        extractedTextDiv.style.display = 'none';
+                    }
+                    resultDiv.style.display = 'block';
+                } else {
+                    throw new Error(data.detail || 'An error occurred');
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                scoreDiv.textContent = 'Error';
+                statusDiv.textContent = error.message;
+                extractedTextDiv.style.display = 'none';
+                resultDiv.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Match Resume';
+            }
+        });
+        
+        // PDF form submission
+        document.getElementById('pdfForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('pdfSubmitBtn');
+            const resultDiv = document.getElementById('result');
+            const scoreDiv = document.getElementById('score');
+            const statusDiv = document.getElementById('status');
+            const extractedTextDiv = document.getElementById('extractedText');
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processing PDF...';
+            
+            const formData = new FormData();
+            formData.append('resume_pdf', document.getElementById('resumePdf').files[0]);
+            formData.append('job_description', document.getElementById('jobDescriptionPdf').value);
+            
+            try {
+                const response = await fetch('http://localhost:8000/match-pdf/', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    if (data.error) {
+                        resultDiv.className = 'result error';
+                        scoreDiv.textContent = 'Error';
+                        statusDiv.textContent = data.error;
+                        extractedTextDiv.style.display = 'none';
+                    } else {
+                        resultDiv.className = 'result success';
+                        scoreDiv.textContent = `${data.match_score}%`;
+                        statusDiv.textContent = data.result;
+                        
+                        if (data.extracted_resume) {
+                            extractedTextDiv.innerHTML = `<strong>Extracted Resume Text:</strong><br>${data.extracted_resume}`;
+                            extractedTextDiv.style.display = 'block';
+                        } else {
+                            extractedTextDiv.style.display = 'none';
+                        }
+                    }
+                    resultDiv.style.display = 'block';
+                } else {
+                    throw new Error(data.detail || 'An error occurred');
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                scoreDiv.textContent = 'Error';
+                statusDiv.textContent = error.message;
+                extractedTextDiv.style.display = 'none';
+                resultDiv.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Match Resume';
+            }
+        });
+        
+        // URL form submission
+        document.getElementById('urlForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('urlSubmitBtn');
+            const resultDiv = document.getElementById('result');
+            const scoreDiv = document.getElementById('score');
+            const statusDiv = document.getElementById('status');
+            const extractedTextDiv = document.getElementById('extractedText');
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Fetching job description...';
+            
+            const formData = new FormData();
+            formData.append('resume_text', document.getElementById('resumeTextUrl').value);
+            formData.append('job_url', document.getElementById('jobUrl').value);
+            
+            try {
+                const response = await fetch('http://localhost:8000/match-url/', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    if (data.error) {
+                        resultDiv.className = 'result error';
+                        scoreDiv.textContent = 'Error';
+                        statusDiv.textContent = data.error;
+                        extractedTextDiv.style.display = 'none';
+                    } else {
+                        resultDiv.className = 'result success';
+                        scoreDiv.textContent = `${data.match_score}%`;
+                        statusDiv.textContent = data.result;
+                        
+                        if (data.extracted_job_description) {
+                            extractedTextDiv.innerHTML = `<strong>Extracted Job Description:</strong><br>${data.extracted_job_description}`;
+                            extractedTextDiv.style.display = 'block';
+                        } else {
+                            extractedTextDiv.style.display = 'none';
+                        }
+                    }
+                    resultDiv.style.display = 'block';
+                } else {
+                    throw new Error(data.detail || 'An error occurred');
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                scoreDiv.textContent = 'Error';
+                statusDiv.textContent = error.message;
+                extractedTextDiv.style.display = 'none';
+                resultDiv.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Match Resume';
+            }
+        });
+    </script>
+</body>
+</html>
