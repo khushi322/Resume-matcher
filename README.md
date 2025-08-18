@@ -1,67 +1,67 @@
-***📄 Resume Matcher***
+# 📄 Resume Matcher  
 
+[![Frontend](https://img.shields.io/badge/Frontend-Live%20on%20Netlify-brightgreen?logo=netlify)](https://unrivaled-parfait-0f4139.netlify.app/)  
+[![Backend](https://img.shields.io/badge/Backend-Live%20on%20Render-blueviolet?logo=render)](https://resume-matcher-auwj.onrender.com)  
+![Python](https://img.shields.io/badge/Python-3.9+-blue?logo=python)  
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-success?logo=fastapi)  
+![NLP](https://img.shields.io/badge/NLP-spaCy%20%7C%20scikit--learn-orange)  
 
+---
 
+## 🚀 Live Demo  
 
+- 🌐 **Frontend (Netlify):** [Resume Matcher UI](https://unrivaled-parfait-0f4139.netlify.app/)  
+- ⚡ **Backend API (Render):** [FastAPI Backend](https://resume-matcher-auwj.onrender.com)  
 
-🚀 Live Demo
-🌐 Frontend (Netlify): Resume Matcher UI
+---
 
-⚡ Backend API (Render): FastAPI Backend
+## ✨ Features  
 
-✨ Features
-Text Input → Paste resume & job description to get a score
+- 📝 **Text Input** → Paste resume & job description to get a score  
+- 📄 **PDF Upload** → Upload your resume in PDF format  
+- 🔗 **Job URL Extraction** → Extract job descriptions directly from a link  
+- 📊 **Instant Match Score & Result** (`Weak`, `Moderate`, `Strong`)  
+- ☁️ **Deployed** with Render (Backend) & Netlify (Frontend)  
 
-PDF Upload → Upload your resume in PDF format
+---
 
-Job URL Extraction → Extract job descriptions directly from a link
+## 🛠️ Tech Stack  
 
-Instant Match Score & Result (Weak, Moderate, Strong)
+- **Backend:** FastAPI · scikit-learn · spaCy · PyPDF2  
+- **Frontend:** HTML · CSS · JavaScript  
+- **Deployment:** Render · Netlify  
 
-Deployed with Render (Backend) & Netlify (Frontend)
+---
 
-🛠️ Tech Stack
-Backend: FastAPI · scikit-learn · spaCy · PyPDF2
+## ▶️ How to Use  
 
-Frontend: HTML · CSS · JavaScript
+1️⃣ Open the [Resume Matcher UI](https://unrivaled-parfait-0f4139.netlify.app/)  
+2️⃣ Choose one option:  
+   - Paste resume text + job description  
+   - Upload a PDF resume  
+   - Enter a job posting URL  
+3️⃣ Click **Match Resume** → See your **score & result instantly**  
 
-Deployment: Render · Netlify
+---
 
-▶️ How to Use
-Open the Resume Matcher UI.
+## 📌 API Documentation  
 
-Choose one option:
+📍 Available at 👉 [Swagger Docs](https://resume-matcher-auwj.onrender.com/docs)  
 
-Paste resume text + job description
+**Example Request:**  
 
-Upload a PDF resume
-
-Enter a job posting URL
-
-Click Match Resume → See your score & result instantly
-
-📌 API Documentation
-👉 Swagger Docs
-
-Example Request:
-
-json
-Copy
-Edit
+```json
 POST /match/
 {
   "resume_text": "Experienced in Python, SQL, and Tableau.",
   "job_description": "Looking for a Data Analyst skilled in Python, SQL, and Power BI."
 }
-Example Response:
 
-json
-Copy
-Edit
+**Example Response:**
 {
   "match_score": 72.5,
   "result": "Moderate"
 }
 
-👩‍💻 Author
+**👩‍💻 Author**
 Developed by Khushi Shukla 💡
