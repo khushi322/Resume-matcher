@@ -72,6 +72,7 @@ def fetch_job_description_from_url(url: str):
         raise Exception(f"Error fetching URL {url}: {str(e)}")
 
 
+app = FastAPI()
 @app.get("/")
 def root():
     return {"message": "Resume matcher is live!"}
