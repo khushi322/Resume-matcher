@@ -63,5 +63,3 @@ POST /match/
   "result": "Moderate"
 }
 
-**👩‍💻 Author**
-Developed by Khushi Shukla 💡
