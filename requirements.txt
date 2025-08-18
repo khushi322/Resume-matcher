@@ -6,5 +6,6 @@ pydantic
 numpy
 PyPDF2
 requests
-requests-html
+beautifulsoup4
+lxml
 python-multipart
