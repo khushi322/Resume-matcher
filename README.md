@@ -1,43 +1,49 @@
-***📄 Resume Matcher***
+📄 Resume Matcher
 
 
 
 
 
 🚀 Live Demo
-🌐 Frontend (Netlify): 👉 Resume Matcher UI
+🌐 Frontend (Netlify): Resume Matcher UI
 
-⚡ Backend API (Render): 👉 FastAPI Backend
+⚡ Backend API (Render): FastAPI Backend
 
-⚡ Features
-✅ Paste Resume & Job Description → Get instant Match Score & Result
-✅ Upload Resume PDF → Extract text automatically
-✅ Job URL Extraction → Pulls job description directly from URL
-✅ User-Friendly UI hosted on Netlify
-✅ FastAPI Backend deployed on Render
+✨ Features
+Text Input → Paste resume & job description to get a score
+
+PDF Upload → Upload your resume in PDF format
+
+Job URL Extraction → Extract job descriptions directly from a link
+
+Instant Match Score & Result (Weak, Moderate, Strong)
+
+Deployed with Render (Backend) & Netlify (Frontend)
 
 🛠️ Tech Stack
-Backend: ⚡ FastAPI, 🧠 scikit-learn, 🔍 spaCy, 📄 PyPDF2
+Backend: FastAPI · scikit-learn · spaCy · PyPDF2
 
-Frontend: 🌐 HTML, CSS, JavaScript
+Frontend: HTML · CSS · JavaScript
 
-Deployment: ☁️ Render (Backend), 🌱 Netlify (Frontend)
+Deployment: Render · Netlify
 
 ▶️ How to Use
-1️⃣ Open the Live UI
-2️⃣ Choose one of the modes:
+Open the Resume Matcher UI.
 
-✍️ Text Input → Paste resume & job description
+Choose one option:
 
-📄 PDF Upload → Upload your resume in PDF format
+Paste resume text + job description
 
-🔗 URL Input → Enter a job posting URL
-3️⃣ Click Match Resume → Instantly see Score + Result
+Upload a PDF resume
+
+Enter a job posting URL
+
+Click Match Resume → See your score & result instantly
 
 📌 API Documentation
-📍 Available at 👉 Swagger Docs
+👉 Swagger Docs
 
-🔹 Example request:
+Example Request:
 
 json
 Copy
@@ -47,7 +53,7 @@ POST /match/
   "resume_text": "Experienced in Python, SQL, and Tableau.",
   "job_description": "Looking for a Data Analyst skilled in Python, SQL, and Power BI."
 }
-🔹 Example response:
+Example Response:
 
 json
 Copy
@@ -57,4 +63,4 @@ Edit
   "result": "Moderate"
 }
 👩‍💻 Author
-✨ Developed with passion by Khushi Shukla 💡
+Developed by Khushi Shukla 💡
