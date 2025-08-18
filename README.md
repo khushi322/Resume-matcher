@@ -1,51 +1,43 @@
-📄 Resume Matcher
+***📄 Resume Matcher***
 
 
 
 
-
-A web application that matches resumes with job descriptions using NLP techniques.
-Easily check how well a resume aligns with a given job description.
 
 🚀 Live Demo
-Frontend (Netlify): 👉 Resume Matcher UI
+🌐 Frontend (Netlify): 👉 Resume Matcher UI
 
-Backend API (Render): 👉 FastAPI Backend
+⚡ Backend API (Render): 👉 FastAPI Backend
 
 ⚡ Features
-Text Input: Paste resume and job description → get a match score.
-
-PDF Upload: Upload a resume in PDF format.
-
-Job URL Extraction: Extract job description text from a URL (basic version).
-
-Match Score & Result: See percentage score and result (Weak, Moderate, Strong).
+✅ Paste Resume & Job Description → Get instant Match Score & Result
+✅ Upload Resume PDF → Extract text automatically
+✅ Job URL Extraction → Pulls job description directly from URL
+✅ User-Friendly UI hosted on Netlify
+✅ FastAPI Backend deployed on Render
 
 🛠️ Tech Stack
-Backend: FastAPI, scikit-learn, spaCy, PyPDF2
+Backend: ⚡ FastAPI, 🧠 scikit-learn, 🔍 spaCy, 📄 PyPDF2
 
-Frontend: HTML, CSS, JavaScript (hosted on Netlify)
+Frontend: 🌐 HTML, CSS, JavaScript
 
-Deployment: Render (Backend), Netlify (Frontend)
+Deployment: ☁️ Render (Backend), 🌱 Netlify (Frontend)
 
 ▶️ How to Use
-Go to the Live UI.
+1️⃣ Open the Live UI
+2️⃣ Choose one of the modes:
 
-Choose one of the modes:
+✍️ Text Input → Paste resume & job description
 
-Text Input → Paste resume & job description text.
+📄 PDF Upload → Upload your resume in PDF format
 
-PDF Upload → Upload resume PDF & paste job description.
-
-URL Input → Enter a job posting URL.
-
-Click Match Resume → See your score instantly!
+🔗 URL Input → Enter a job posting URL
+3️⃣ Click Match Resume → Instantly see Score + Result
 
 📌 API Documentation
-The backend is available here:
-👉 Swagger Docs
+📍 Available at 👉 Swagger Docs
 
-Example request:
+🔹 Example request:
 
 json
 Copy
@@ -55,7 +47,7 @@ POST /match/
   "resume_text": "Experienced in Python, SQL, and Tableau.",
   "job_description": "Looking for a Data Analyst skilled in Python, SQL, and Power BI."
 }
-Example response:
+🔹 Example response:
 
 json
 Copy
@@ -65,5 +57,4 @@ Edit
   "result": "Moderate"
 }
 👩‍💻 Author
-Developed by Khushi Shukla 💡
-
+✨ Developed with passion by Khushi Shukla 💡
