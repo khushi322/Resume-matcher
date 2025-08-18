@@ -8,7 +8,7 @@ import numpy as np
 import spacy
 import PyPDF2
 import requests
-from requests_html import HTMLSession
+from bs4 import BeautifulSoup
 import re
 import io
 
@@ -47,33 +47,30 @@ def extract_text_from_pdf(pdf_file: UploadFile):
         raise Exception(f"Error reading PDF: {str(e)}")
 
 def fetch_job_description_from_url(url: str):
-    """Fetch job description from URL"""
     try:
-        session = HTMLSession()
-        response = session.get(url, timeout=15)
-        response.html.render(timeout=20, sleep=3)
-        
-        # Target job description sections
-        text_elements = response.html.find('p,div,li,h1,h2,h3,span[class*="description"],span[class*="job"],span[class*="responsibilities"],span[class*="requirements"],span[class*="qualifications"],div[class*="description"],div[class*="job"],div[class*="responsibilities"],div[class*="requirements"],div[class*="qualifications"]')
-        
-        if not text_elements:
-            text_elements = response.html.find('p,div,li,span')
-        
-        text = ' '.join([elem.text.strip() for elem in text_elements if elem.text.strip()])
-        
-        # Remove boilerplate content
+        headers = {"User-Agent": "Mozilla/5.0"}
+        resp = requests.get(url, headers=headers, timeout=12)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "lxml")
+
+        candidates = soup.find_all(['p','li','div','span','h1','h2','h3'])
+        texts = []
+        for el in candidates:
+            t = el.get_text(separator=" ", strip=True)
+            if t and len(t.split()) > 3:
+                texts.append(t)
+
+        text = " ".join(texts)
         irrelevant_patterns = r'\b(cookie|privacy|policy|linkedin|sign|agree|agreement|email|jobid|jobs|apply|footer|copyright|career|posting|terms|conditions|equal opportunity|company|team|about us)\b|http[s]?://\S+|www\.\S+|\d{4,}'
         text = re.sub(irrelevant_patterns, '', text, flags=re.IGNORECASE)
         text = re.sub(r'\s+', ' ', text).strip()
-        
+
         if len(text.split()) < 50:
             raise Exception("URL content too short or not a job description")
-        
         return text
     except Exception as e:
         raise Exception(f"Error fetching URL {url}: {str(e)}")
-    finally:
-        session.close()
+
 
 @app.get("/")
 def root():
